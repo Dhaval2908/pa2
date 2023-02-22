@@ -3,7 +3,7 @@ import subprocess
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = 'G:/clg/keel/PA@/uploads'
+UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'cc'}
 
 
@@ -31,23 +31,23 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('success'))
+            return redirect(url_for('compile'))
     return '''
     <!doctype html>
     <title>Upload new File</title>
-    <h1>In Kishan Kalsaria's Autograder</h1>
+    <h1>In Kishan Kalaria's Autograder</h1>
     <form method=post enctype=multipart/form-data>
     <h2><b>Please Select "walk.cc"</h2>
       <input type=file name=file>
       <input type=submit value=Upload>
     </form>
     '''
-@app.route('/success')
-def success():
+@app.route('/compile')
+def compile():
     file_path = os.path.join(os.getcwd(), 'compile.py')
 
     # execute the Python file
-    output = subprocess.check_output(['python', file_path])
+    output = subprocess.check_output(['python3', file_path])
 
     # decode the output from bytes to a string
     output = output.decode('utf-8')
@@ -61,4 +61,4 @@ if __name__ == "__main__":
     # sess.init_app(app)
 
     app.debug = True
-    app.run()
+    app.run(host='0.0.0.0', debug=True)
