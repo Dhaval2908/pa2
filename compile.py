@@ -3,8 +3,6 @@ import os
 import subprocess 
 subprocess.call("rm -f ./a.out", shell=True)
 retcode = subprocess.call("/usr/bin/g++ uploads/walk.cc", shell=True)
-print("This is RetCode::")
-print(retcode)
 if retcode:
     print("failed to compile walk.cc")
     exit
